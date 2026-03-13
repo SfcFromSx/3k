@@ -8,11 +8,11 @@ import charactersData from '../assets/characters.json';
 export const startGameRound = async () => {
   const config = useConfigStore.getState();
   const gameStore = useGameStore.getState();
-  
+
   // Pick 3 random unique characters
   const shuffled = [...charactersData].sort(() => 0.5 - Math.random());
   const selectedChars = shuffled.slice(0, 3);
-  
+
   const initialPlayers: Record<string, PlayerState> = {
     A: {
       id: 'A',
@@ -59,7 +59,7 @@ export const executePlayerTurn = async (playerId: 'A' | 'B' | 'C') => {
   const config = useConfigStore.getState();
   const gameStore = useGameStore.getState();
   const player = gameStore.players[playerId];
-  
+
   if (player.hasGuessed || player.turnsUsed >= config.turnsPerRound) {
     // Skip this player
     const nextPlayer = playerId === 'A' ? 'B' : playerId === 'B' ? 'C' : 'A';
@@ -101,15 +101,6 @@ Ask your question now:
 `;
 
   const question = await generateChatResponse(modelName as string, [{ role: 'user', content: prompt }]);
-  
-  if (question.startsWith("(System: Error")) {
-    gameStore.addChatMessage({
-      sender: 'System',
-      textEN: `Player ${playerId} encountered a connection error. Skipping turn.`,
-    });
-    passTurn(playerId);
-    return;
-  }
 
   gameStore.addChatMessage({
     sender: `Player${playerId}` as any,
@@ -124,10 +115,10 @@ export const executeJudgeTurn = async (playerId: 'A' | 'B' | 'C', question: stri
   const config = useConfigStore.getState();
   const gameStore = useGameStore.getState();
   const player = gameStore.players[playerId];
-  
+
   const modelName = config.models.judge;
   const character = charactersData.find(c => c.id === player.assignedCharacterId);
-  
+
   let judgeAnswer = "(No Judge model assigned.)";
   if (modelName && character) {
     const prompt = `
@@ -144,7 +135,7 @@ Determine if the question accurately describes ${character.nameEN} and provide y
 `;
     // For judge we want minimal tokens and low temp
     const rawAnswer = await generateChatResponse(modelName, [{ role: 'user', content: prompt }], { temperature: 0.1 });
-    
+
     // Attempt parse
     if (rawAnswer.toLowerCase().includes('yes')) judgeAnswer = 'Yes.';
     else if (rawAnswer.toLowerCase().includes('not yes')) judgeAnswer = 'Not Yes and Not Wrong.';
@@ -160,8 +151,8 @@ Determine if the question accurately describes ${character.nameEN} and provide y
 
   // Handle translation if enabled (simplified inline async patch)
   if (config.translationEnabled && config.models.translator) {
-      triggerTranslation(gameStore.chatLog[gameStore.chatLog.length - 2].id, question);
-      triggerTranslation(gameStore.chatLog[gameStore.chatLog.length - 1].id, judgeAnswer);
+    triggerTranslation(gameStore.chatLog[gameStore.chatLog.length - 2].id, question);
+    triggerTranslation(gameStore.chatLog[gameStore.chatLog.length - 1].id, judgeAnswer);
   }
 
   // Check if it was a guess
@@ -182,16 +173,16 @@ Determine if the question accurately describes ${character.nameEN} and provide y
 };
 
 const triggerTranslation = async (msgId: string, text: string) => {
-    const config = useConfigStore.getState();
-    const gameStore = useGameStore.getState();
-    if (!config.models.translator) return;
+  const config = useConfigStore.getState();
+  const gameStore = useGameStore.getState();
+  if (!config.models.translator) return;
 
-    const cnText = await generateChatResponse(config.models.translator, [{ 
-        role: 'user', 
-        content: `Translate to simplified Chinese: ${text}`
-    }]);
+  const cnText = await generateChatResponse(config.models.translator, [{
+    role: 'user',
+    content: `Translate to simplified Chinese: ${text}`
+  }]);
 
-    gameStore.updateChatMessage(msgId, { textCN: cnText });
+  gameStore.updateChatMessage(msgId, { textCN: cnText });
 }
 
 const passTurn = (currentPlayerId: 'A' | 'B' | 'C') => {
@@ -200,31 +191,31 @@ const passTurn = (currentPlayerId: 'A' | 'B' | 'C') => {
 };
 
 const checkRoundEnd = () => {
-    const config = useConfigStore.getState();
-    const gameStore = useGameStore.getState();
-    const players = Object.values(gameStore.players);
+  const config = useConfigStore.getState();
+  const gameStore = useGameStore.getState();
+  const players = Object.values(gameStore.players);
 
-    const allFinished = players.every(p => p.hasGuessed || p.turnsUsed >= config.turnsPerRound);
+  const allFinished = players.every(p => p.hasGuessed || p.turnsUsed >= config.turnsPerRound);
 
-    if (allFinished) {
-        gameStore.setStatus('ROUND_OVER');
-        gameStore.addChatMessage({
-            sender: 'System',
-            textEN: `Round ${gameStore.currentRound} Over! Learning phase initiated...`
-        });
-        // We could run runRoundReview() here
-    } else {
-        // Pass to next active player
-        let nextPlayer = gameStore.activePlayerId === 'A' ? 'B' : gameStore.activePlayerId === 'B' ? 'C' : 'A';
-        // Skip those who finished
-        for(let i=0; i<3; i++) {
-            const p = gameStore.players[nextPlayer];
-            if (p.hasGuessed || p.turnsUsed >= config.turnsPerRound) {
-                nextPlayer = nextPlayer === 'A' ? 'B' : nextPlayer === 'B' ? 'C' : 'A';
-            } else {
-                break;
-            }
-        }
-        gameStore.setActivePlayerId(nextPlayer as 'A' | 'B' | 'C');
+  if (allFinished) {
+    gameStore.setStatus('ROUND_OVER');
+    gameStore.addChatMessage({
+      sender: 'System',
+      textEN: `Round ${gameStore.currentRound} Over! Learning phase initiated...`
+    });
+    // We could run runRoundReview() here
+  } else {
+    // Pass to next active player
+    let nextPlayer = gameStore.activePlayerId === 'A' ? 'B' : gameStore.activePlayerId === 'B' ? 'C' : 'A';
+    // Skip those who finished
+    for (let i = 0; i < 3; i++) {
+      const p = gameStore.players[nextPlayer];
+      if (p.hasGuessed || p.turnsUsed >= config.turnsPerRound) {
+        nextPlayer = nextPlayer === 'A' ? 'B' : nextPlayer === 'B' ? 'C' : 'A';
+      } else {
+        break;
+      }
     }
+    gameStore.setActivePlayerId(nextPlayer as 'A' | 'B' | 'C');
+  }
 }
