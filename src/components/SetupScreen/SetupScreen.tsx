@@ -11,21 +11,24 @@ const SetupScreen = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadModels = async () => {
-      const availableModels = await fetchModels();
-      setModels(availableModels);
-      if (availableModels.length > 0) {
-          // Pre-select the first available if not set
-          ['playerA', 'playerB', 'playerC', 'judge', 'translator'].forEach(role => {
-              if(!config.models[role as keyof typeof config.models]) {
-                 config.setModel(role as keyof typeof config.models, availableModels[0]);
-              }
-          });
-      }
-      setLoading(false);
-    };
     loadModels();
   }, []);
+
+  const loadModels = async () => {
+    setLoading(true);
+    const availableModels = await fetchModels();
+    setModels(availableModels);
+    
+    if (availableModels.length > 0) {
+        // Pre-select the first available if not set
+        ['playerA', 'playerB', 'playerC', 'judge', 'translator'].forEach(role => {
+            if(!config.models[role as keyof typeof config.models]) {
+               config.setModel(role as keyof typeof config.models, availableModels[0]);
+            }
+        });
+    }
+    setLoading(false);
+  };
 
   const handleStart = async () => {
     setStatus('SETUP');
@@ -86,8 +89,14 @@ const SetupScreen = () => {
             {loading ? (
               <p className="animate-pulse">Detecting local Ollama models...</p>
             ) : models.length === 0 ? (
-              <div className="p-4 bg-red-100/80 text-stamp border border-red-300 rounded">
-                Ensure Ollama is running locally `http://localhost:11434` with at least one model pulled.
+              <div className="p-4 bg-red-50 text-stamp border border-red-200 rounded text-center">
+                <p className="mb-4 text-sm">Ollama instance not detected or no models found at <code className="bg-red-100 px-1">localhost:11434</code>.</p>
+                <button 
+                  onClick={loadModels}
+                  className="px-4 py-2 bg-stamp text-white rounded hover:bg-red-800 transition shadow-sm font-bold text-sm"
+                >
+                  Retry Connection
+                </button>
               </div>
             ) : (
                <div className="space-y-4">
@@ -112,13 +121,16 @@ const SetupScreen = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <button 
-            onClick={handleStart}
-            disabled={models.length === 0}
-            className="px-12 py-4 bg-stamp text-white text-2xl font-bold rounded-lg shadow-lg hover:bg-red-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border-2 border-transparent hover:border-gold"
-          >
-            Start Simulation
-          </button>
+          {models.length > 0 ? (
+            <button 
+              onClick={handleStart}
+              className="px-12 py-4 bg-stamp text-white text-2xl font-bold rounded-lg shadow-lg hover:bg-red-800 transition-colors border-2 border-transparent hover:border-gold"
+            >
+              Start Simulation
+            </button>
+          ) : (
+            <div className="text-ink/40 italic">Waiting for local AI to start...</div>
+          )}
         </div>
       </div>
     </div>

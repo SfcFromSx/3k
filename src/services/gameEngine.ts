@@ -102,6 +102,15 @@ Ask your question now:
 
   const question = await generateChatResponse(modelName as string, [{ role: 'user', content: prompt }]);
   
+  if (question.startsWith("(System: Error")) {
+    gameStore.addChatMessage({
+      sender: 'System',
+      textEN: `Player ${playerId} encountered a connection error. Skipping turn.`,
+    });
+    passTurn(playerId);
+    return;
+  }
+
   gameStore.addChatMessage({
     sender: `Player${playerId}` as any,
     textEN: question,
