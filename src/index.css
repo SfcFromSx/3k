@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f5f0e1; /* Parchment white */
+  --color-ink: #1c1917;        /* Deep ink black */
+  --color-stamp: #991b1b;      /* Seal red */
+  --color-gold: #b45309;       /* Aged gold */
+  
+  --color-primary: #991b1b;
+  --color-primary-hover: #7f1d1d;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-ink);
+  font-family: "Noto Serif SC", serif;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Custom scrollbar for an elegant feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stamp);
+}

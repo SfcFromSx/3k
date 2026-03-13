@@ -1,0 +1,140 @@
+[
+  {
+    "id": "c_001",
+    "nameEN": "Zhao Yun",
+    "nameCN": "赵云",
+    "faction": "Shu",
+    "role": "General",
+    "traits": [
+      "Five Tiger Generals",
+      "Spear",
+      "Changban",
+      "Loyal"
+    ],
+    "bio": "Legendary general of Shu Han, famous for his bravery at Changban."
+  },
+  {
+    "id": "c_002",
+    "nameEN": "Zhou Yu",
+    "nameCN": "周瑜",
+    "faction": "Wu",
+    "role": "Strategist",
+    "traits": [
+      "Chi Bi",
+      "Fire Attack",
+      "Handsome",
+      "Music"
+    ],
+    "bio": "Brilliant commander of Eastern Wu, orchestrated the victory at Red Cliffs."
+  },
+  {
+    "id": "c_003",
+    "nameEN": "Diaochan",
+    "nameCN": "貂蝉",
+    "faction": "Other",
+    "role": "Beauty",
+    "traits": [
+      "Four Beauties",
+      "Dong Zhuo",
+      "Lu Bu",
+      "Dance"
+    ],
+    "bio": "One of the Four Great Beauties, she helped orchestrate the downfall of the tyrant Dong Zhuo."
+  },
+  {
+    "id": "c_004",
+    "nameEN": "Cao Cao",
+    "nameCN": "曹操",
+    "faction": "Wei",
+    "role": "Warlord",
+    "traits": [
+      "Poet",
+      "Ruthless",
+      "Emperor Xian",
+      "Guandu"
+    ],
+    "bio": "Brilliant, ruthless warlord who laid the foundations for the state of Cao Wei."
+  },
+  {
+    "id": "c_005",
+    "nameEN": "Guan Yu",
+    "nameCN": "关羽",
+    "faction": "Shu",
+    "role": "General",
+    "traits": [
+      "Five Tiger Generals",
+      "Green Dragon Crescent Blade",
+      "Loyal",
+      "Red Face"
+    ],
+    "bio": "Sworn brother of Liu Bei, revered for his martial prowess and unwavering loyalty."
+  },
+  {
+    "id": "c_006",
+    "nameEN": "Lu Bu",
+    "nameCN": "吕布",
+    "faction": "Other",
+    "role": "General",
+    "traits": [
+      "Flying General",
+      "Red Hare",
+      "Betrayal",
+      "Unmatched Warrior"
+    ],
+    "bio": "The most feared warrior of his time, notorious for his volatile loyalties."
+  },
+  {
+    "id": "c_007",
+    "nameEN": "Zhuge Liang",
+    "nameCN": "诸葛亮",
+    "faction": "Shu",
+    "role": "Strategist",
+    "traits": [
+      "Sleeping Dragon",
+      "Feather Fan",
+      "Empty Fort Strategy",
+      "Loyal"
+    ],
+    "bio": "Master strategist and chancellor of Shu Han, renowned for his foresight."
+  },
+  {
+    "id": "c_008",
+    "nameEN": "Sun Quan",
+    "nameCN": "孙权",
+    "faction": "Wu",
+    "role": "Warlord",
+    "traits": [
+      "Green Eyes",
+      "Purple Beard",
+      "Defender of Jiangdong"
+    ],
+    "bio": "Founding emperor of Eastern Wu, successfully defended his territory against Cao Cao."
+  },
+  {
+    "id": "c_009",
+    "nameEN": "Sima Yi",
+    "nameCN": "司马懿",
+    "faction": "Wei",
+    "role": "Strategist",
+    "traits": [
+      "Wolf's Guise",
+      "Patience",
+      "Wuzhang Plains"
+    ],
+    "bio": "Cunning military strategist of Wei, and the main rival of Zhuge Liang."
+  },
+  {
+    "id": "c_010",
+    "nameEN": "Zhang Fei",
+    "nameCN": "张飞",
+    "faction": "Shu",
+    "role": "General",
+    "traits": [
+      "Five Tiger Generals",
+      "Serpent Halberd",
+      "Changban Bridge",
+      "Loud Voice"
+    ],
+    "bio": "Sworn brother of Liu Bei and Guan Yu, a fierce warrior who held the bridge at Changban alone."
+  }
+]
