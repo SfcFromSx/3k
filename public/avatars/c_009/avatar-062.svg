@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Sima Yi avatar 62">
+  <defs>
+    <linearGradient id="bg-c_009-62" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#434f62" />
+      <stop offset="100%" stop-color="#d1ad64" />
+    </linearGradient>
+    <radialGradient id="glow-c_009-62" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#f9fcff" stop-opacity="0.94" />
+      <stop offset="100%" stop-color="#384457" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="256" height="256" rx="36" fill="url(#bg-c_009-62)" />
+  <rect x="12" y="12" width="232" height="232" rx="28" fill="url(#glow-c_009-62)" opacity="0.75" />
+  <path d="M206 60 L226 94 L186 94 Z" fill="#bb974e" opacity="0.8" /><rect x="198" y="94" width="16" height="26" rx="6" fill="#384457" opacity="0.7" />
+  <circle cx="128" cy="128" r="104" fill="none" stroke="#e5e8ec" stroke-width="8" opacity="0.85" />
+  <path d="M52 222 Q128 162 204 222 V256 H52 Z" fill="#d8d9e1" />
+  <path d="M68 210 Q128 191 188 210" fill="none" stroke="#bb974e" stroke-width="8" stroke-linecap="round" opacity="0.8" />
+  <path d="M86 206 Q128 170 170 206" fill="none" stroke="#edf0f4" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+  <ellipse cx="128" cy="146" rx="85" ry="101" fill="#e6e9ed" />
+  <path d="M84 132 Q128 63 172 132 L168 92 Q128 42 88 92 Z" fill="#272221" />
+  <path d="M80 134 Q74 162 92 188" fill="none" stroke="#272221" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  <path d="M176 134 Q182 162 164 188" fill="none" stroke="#272221" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  
+      <path d="M56 93 Q128 17 200 93 L184 156 Q128 126 72 156 Z" fill="#384457" opacity="0.92" />
+      <path d="M80 103 Q128 61 176 103" fill="none" stroke="#bb974e" stroke-width="6" stroke-linecap="round" />
+    
+  <path d="M94 99 Q104 93 116 99" fill="none" stroke="#272221" stroke-width="5" stroke-linecap="round" />
+  <path d="M140 99 Q152 93 162 99" fill="none" stroke="#272221" stroke-width="5" stroke-linecap="round" />
+  <ellipse cx="104" cy="111" rx="7" ry="5" fill="#251b1a" />
+  <ellipse cx="152" cy="111" rx="7" ry="5" fill="#251b1a" />
+  <circle cx="102" cy="110" r="2" fill="#fff8ee" opacity="0.8" />
+  <circle cx="150" cy="110" r="2" fill="#fff8ee" opacity="0.8" />
+  <path d="M128 121 Q120 139 128 149 Q136 139 128 121" fill="#d8dbdf" opacity="0.68" />
+  <path d="M104 167 Q128 181 152 167" fill="none" stroke="#312c2b" stroke-width="5" stroke-linecap="round" />
+  <path d="M31 232 Q128 180 225 232" fill="none" stroke="#f0f1f9" stroke-width="12" stroke-linecap="round" opacity="0.55" />
+  
+      <path d="M128 160 Q116 182 128 200 Q140 182 128 160 Z" fill="#272221" opacity="0.9" />
+      <path d="M106 148 Q128 158 150 148" fill="none" stroke="#272221" stroke-width="5" stroke-linecap="round" />
+    
+  <circle cx="128" cy="206" r="34" fill="#2c384b" opacity="0.92" />
+  <path d="M138 184 A22 22 0 1 0 138 228 A16 16 0 1 1 138 184 Z" fill="#bb974e" />
+  <text x="128" y="92" text-anchor="middle" font-size="18" font-weight="700" font-family="Georgia, serif" fill="#e1e4e8" opacity="0.75">SY</text>
+</svg>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Guan Yu avatar 14">
+  <defs>
+    <linearGradient id="bg-c_005-14" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2a7849" />
+      <stop offset="100%" stop-color="#cfaf51" />
+    </linearGradient>
+    <radialGradient id="glow-c_005-14" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#fef2c9" stop-opacity="0.94" />
+      <stop offset="100%" stop-color="#2c7a4b" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="256" height="256" rx="36" fill="url(#bg-c_005-14)" />
+  <rect x="12" y="12" width="232" height="232" rx="28" fill="url(#glow-c_005-14)" opacity="0.75" />
+  <circle cx="48" cy="72" r="10" fill="#dfbf61" opacity="0.8" /><circle cx="66" cy="58" r="6" fill="#2c7a4b" opacity="0.7" />
+  <circle cx="128" cy="128" r="104" fill="none" stroke="#eadeb5" stroke-width="8" opacity="0.85" />
+  <path d="M52 222 Q128 169 204 222 V256 H52 Z" fill="#752a28" />
+  <path d="M68 210 Q128 185 188 210" fill="none" stroke="#dfbf61" stroke-width="8" stroke-linecap="round" opacity="0.8" />
+  <path d="M86 206 Q128 170 170 206" fill="none" stroke="#f2e6bd" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+  <ellipse cx="128" cy="146" rx="89" ry="98" fill="#fff3ca" />
+  <path d="M84 132 Q128 68 172 132 L168 92 Q128 48 88 92 Z" fill="#2f211b" />
+  <path d="M80 134 Q74 162 92 188" fill="none" stroke="#2f211b" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  <path d="M176 134 Q182 162 164 188" fill="none" stroke="#2f211b" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  
+      <path d="M68 84 Q128 22 188 84 L176 124 Q128 96 80 124 Z" fill="#2c7a4b" />
+      <path d="M94 82 Q128 48 162 82" fill="none" stroke="#dfbf61" stroke-width="8" stroke-linecap="round" />
+    
+  <path d="M90 94 Q100 88 112 94" fill="none" stroke="#2f211b" stroke-width="5" stroke-linecap="round" />
+  <path d="M144 94 Q156 88 166 94" fill="none" stroke="#2f211b" stroke-width="5" stroke-linecap="round" />
+  <ellipse cx="100" cy="106" rx="7" ry="5" fill="#251b1a" />
+  <ellipse cx="156" cy="106" rx="7" ry="5" fill="#251b1a" />
+  <circle cx="98" cy="105" r="2" fill="#fff8ee" opacity="0.8" />
+  <circle cx="154" cy="105" r="2" fill="#fff8ee" opacity="0.8" />
+  <path d="M128 116 Q120 134 128 144 Q136 134 128 116" fill="#f1e5bc" opacity="0.68" />
+  <path d="M104 162 Q128 176 152 162" fill="none" stroke="#392b25" stroke-width="5" stroke-linecap="round" />
+  <path d="M40 232 Q128 180 216 232" fill="none" stroke="#8d4240" stroke-width="12" stroke-linecap="round" opacity="0.55" />
+  
+      <path d="M128 156 Q112 182 99 222 Q128 212 157 222 Q144 182 128 156 Z" fill="#2f211b" opacity="0.9" />
+      <path d="M104 150 Q128 168 152 150" fill="none" stroke="#2f211b" stroke-width="5" stroke-linecap="round" />
+    
+  <circle cx="128" cy="206" r="34" fill="#206e3f" opacity="0.92" />
+  <path d="M120 184 L140 184 L146 226 L114 226 Z" fill="#dfbf61" /><path d="M128 172 L144 190 L128 198 L112 190 Z" fill="#f2e6bd" />
+  <text x="128" y="92" text-anchor="middle" font-size="18" font-weight="700" font-family="Georgia, serif" fill="#e6dab1" opacity="0.75">GY</text>
+</svg>

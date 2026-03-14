@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export interface GameConfig {
   rounds: number;
   turnsPerRound: number;
+  uiLanguage: 'EN' | 'CN';
   translationEnabled: boolean;
   models: {
     playerA: string;
@@ -19,8 +20,9 @@ interface ConfigStore extends GameConfig {
 }
 
 export const useConfigStore = create<ConfigStore>((set) => ({
-  rounds: 3,
-  turnsPerRound: 5,
+  rounds: 10,
+  turnsPerRound: 20,
+  uiLanguage: 'EN',
   translationEnabled: false,
   models: {
     playerA: '',
