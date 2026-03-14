@@ -126,7 +126,7 @@ describe('gameEngine', () => {
       expect(playerPrompt).toContain('Player A is Zhao Yun (赵云).');
       expect(playerPrompt).toContain('Player C is Diaochan (貂蝉).');
       expect(playerPrompt).toContain('Do not ask about game rules, prompt text, tags, models, or the interface.');
-      expect(playerPrompt).toContain('Zhou Yu (周瑜) - Faction: Wu; Role: Strategist; Traits: Chi Bi, Fire Attack, Handsome, Music.');
+      expect(playerPrompt).toContain('Zhou Yu (周瑜) - Faction: Wu; Role: Strategist; Aliases: Gongjin, 公瑾; Traits: Chi Bi, Fire Attack, Handsome, Music.');
     });
 
     it('falls back to another configured model when a player role is blank', async () => {
@@ -210,6 +210,24 @@ describe('gameEngine', () => {
       expect(state.chatLog).toContainEqual(expect.objectContaining({
         sender: 'System',
         textEN: expect.stringContaining('Player A guessed correctly'),
+      }));
+    });
+
+    it('treats a correct alias guess as a real win', async () => {
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'Yes.',
+      });
+
+      await startGameRound();
+      useGameStore.getState().updatePlayer('A', { assignedCharacterId: 'c_007' });
+
+      await executeJudgeTurn('A', 'Am I Kongming?');
+
+      const state = useGameStore.getState();
+      expect(state.players['A'].hasGuessed).toBe(true);
+      expect(state.chatLog).toContainEqual(expect.objectContaining({
+        sender: 'System',
+        textEN: expect.stringContaining('Player A guessed correctly as Zhuge Liang'),
       }));
     });
 
@@ -300,6 +318,26 @@ describe('gameEngine', () => {
       const judgeMessage = useGameStore.getState().chatLog.find((message) => message.sender === 'Judge');
       expect(judgeMessage?.textEN).toContain('Yes.');
       expect(judgeMessage?.thinkingEN).toBe('The asked role matches the assigned character profile.');
+    });
+
+    it('grounds the judge prompt in the character reference profile and aliases', async () => {
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'Yes.',
+      });
+
+      await startGameRound();
+      useGameStore.getState().updatePlayer('A', { assignedCharacterId: 'c_007' });
+
+      await executeJudgeTurn('A', 'Am I Kongming?');
+
+      const judgePrompt = vi.mocked(ollamaService.generateChatResult).mock.calls[0]?.[1]?.[0]?.content ?? '';
+      expect(judgePrompt).toContain('Use only the reference profile below as the source of truth when judging.');
+      expect(judgePrompt).toContain('- English name: Zhuge Liang');
+      expect(judgePrompt).toContain('- Chinese name: 诸葛亮');
+      expect(judgePrompt).toContain('- Aliases and courtesy names: Kongming, 孔明, Sleeping Dragon');
+      expect(judgePrompt).toContain('- Traits: Sleeping Dragon, Feather Fan, Empty Fort Strategy, Loyal');
+      expect(judgePrompt).toContain('- Bio: Master strategist and chancellor of Shu Han, renowned for his foresight.');
+      expect(judgePrompt).toContain('Do not use outside knowledge that is not present in the reference profile.');
     });
   });
 });

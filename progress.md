@@ -35,3 +35,9 @@ TODO / follow-up ideas:
 - The arena language toggle intentionally changes interface labels only; chat text still depends on original English plus optional async translation.
 - If you want full bilingual character metadata, the identity cards could also switch faction labels from raw English values to localized labels.
 - Expanded `src/assets/characters.json` from 10 to 30 bundled characters and regenerated the avatar set to 3,000 SVGs total.
+- Refreshed the 30-character roster with wiki-backed alias and courtesy-name data in `src/assets/characters.json`.
+- Updated `src/services/gameEngine.ts` so player candidate summaries include aliases and the Judge now receives a structured source-of-truth profile with aliases, faction, role, traits, and bio.
+- Fixed judge-side win detection so alias guesses such as `Am I Kongming?` count as correct for the matching character.
+- Added regression coverage in `src/services/gameEngine.test.ts` for alias-aware player prompts, alias guesses, and Judge reference-profile grounding.
+- Verified `npm run test:run`, `npm run lint`, and `npm run build` all pass after the character-reference update.
+- Ran the web-game Playwright client against the setup screen and visually checked `output/web-game/wiki-judge-check/shot-0.png`; no browser console errors were emitted in that pass.

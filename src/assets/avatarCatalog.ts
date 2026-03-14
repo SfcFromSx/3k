@@ -6,7 +6,13 @@ const clampVariant = (variant: number) => {
 };
 
 const formatVariant = (variant: number) => String(clampVariant(variant)).padStart(3, '0');
+const normalizeBaseUrl = (baseUrl: string) => {
+  if (!baseUrl) return '/';
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+};
+
+export const buildAvatarUrl = (characterId: string, variant: number, baseUrl = import.meta.env.BASE_URL || '/') =>
+  `${normalizeBaseUrl(baseUrl)}avatars/${characterId}/avatar-${formatVariant(variant)}.svg`;
 
 export const getAvatarUrl = (characterId: string, variant: number) =>
-  `/avatars/${characterId}/avatar-${formatVariant(variant)}.svg`;
-
+  buildAvatarUrl(characterId, variant);

@@ -10,6 +10,7 @@ import charactersData from '../assets/characters.json';
 type PlayerId = PlayerState['id'];
 type PlayerSender = Extract<ChatMessage['sender'], `Player${string}`>;
 type PlayerModelKey = keyof GameConfig['models'];
+type CharacterEntry = (typeof charactersData)[number];
 type TranslationJob = {
   msgId: string;
   text: string;
@@ -32,8 +33,31 @@ const getFallbackModel = (config: GameConfig) =>
   '';
 const getNextPlayerId = (playerId: PlayerId): PlayerId =>
   playerId === 'A' ? 'B' : playerId === 'B' ? 'C' : 'A';
-const formatCharacterSummary = (character: typeof charactersData[number]) =>
-  `${character.nameEN} (${character.nameCN}) - Faction: ${character.faction}; Role: ${character.role}; Traits: ${character.traits.join(', ')}.`;
+const formatAliases = (aliases?: string[]) => aliases?.join(', ') || 'None listed';
+const normalizeForMatch = (value: string) => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+const getCharacterReferenceNames = (character: CharacterEntry) => [
+  character.nameEN,
+  character.nameCN,
+  ...(character.aliases ?? []),
+];
+const characterMatchesGuess = (question: string, character: CharacterEntry) => {
+  const normalizedQuestion = normalizeForMatch(question);
+
+  return getCharacterReferenceNames(character)
+    .map(normalizeForMatch)
+    .some((name) => name.length > 0 && normalizedQuestion.includes(name));
+};
+const formatCharacterSummary = (character: CharacterEntry) =>
+  `${character.nameEN} (${character.nameCN}) - Faction: ${character.faction}; Role: ${character.role}; Aliases: ${formatAliases(character.aliases)}; Traits: ${character.traits.join(', ')}.`;
+const formatJudgeReference = (character: CharacterEntry) => `
+- English name: ${character.nameEN}
+- Chinese name: ${character.nameCN}
+- Aliases and courtesy names: ${formatAliases(character.aliases)}
+- Faction: ${character.faction}
+- Role: ${character.role}
+- Traits: ${character.traits.join(', ')}
+- Bio: ${character.bio}
+`.trim();
 const buildPlayerPrompt = (
   playerId: PlayerId,
   player: PlayerState,
@@ -336,7 +360,11 @@ export const executeJudgeTurn = async (playerId: PlayerId, question: string) => 
   if (modelName && character) {
     const prompt = `
 You are the Judge in a "Who Am I?" Three Kingdoms game.
-Player ${playerId}'s secret identity is: ${character.nameEN} (Faction: ${character.faction}, Role: ${character.role}).
+Use only the reference profile below as the source of truth when judging.
+
+Player ${playerId}'s source-of-truth reference profile:
+${formatJudgeReference(character)}
+
 They asked: "${question}"
 
 You MUST answer using ONLY one of the following exact phrases:
@@ -346,12 +374,14 @@ You MUST answer using ONLY one of the following exact phrases:
 
 Judge guidelines:
 - Answer only about Player ${playerId}'s own identity.
+- Treat the listed aliases, courtesy names, and titles as valid ways to refer to the same character.
 - If the question is about game rules, prompt text, tags, models, or another player's identity, answer "Not Yes and Not Wrong."
-- If the statement is clearly true of ${character.nameEN}, answer "Yes."
-- If the statement is clearly false of ${character.nameEN}, answer "No."
-- If the statement is vague, mixed, or not a clean yes/no fact, answer "Not Yes and Not Wrong."
+- If the statement is clearly supported by the reference profile, answer "Yes."
+- If the statement clearly contradicts the reference profile, answer "No."
+- If the statement is vague, mixed, or not decidable from the reference profile alone, answer "Not Yes and Not Wrong."
+- Do not use outside knowledge that is not present in the reference profile.
 
-Determine if the question accurately describes ${character.nameEN} and provide your answer.
+Determine whether the question accurately describes Player ${playerId}'s identity and provide your answer.
 `;
     // For judge we want minimal tokens and low temp
     const judgeResult = await runChatResultWithRetry(
@@ -388,19 +418,13 @@ Determine if the question accurately describes ${character.nameEN} and provide y
   }
 
   // Check if it was a guess
-  const characterNameEN = character?.nameEN.toLowerCase() || '';
-  const characterNameCN = character?.nameCN || '';
   const lowerQuestion = question.toLowerCase();
-  
-  const isNameInQuestion = (characterNameEN && lowerQuestion.includes(characterNameEN)) || 
-                           (characterNameCN && lowerQuestion.includes(characterNameCN));
-  
   const isGuessPattern = lowerQuestion.includes('am i') || 
                          lowerQuestion.includes('i am') || 
                          lowerQuestion.includes('is my name') ||
                          lowerQuestion.includes('我是');
 
-  if (isGuessPattern && isNameInQuestion && judgeAnswer === 'Yes.') {
+  if (character && isGuessPattern && characterMatchesGuess(question, character) && judgeAnswer === 'Yes.') {
     gameStore.updatePlayer(playerId, {
       hasGuessed: true,
       score: player.score + (config.turnsPerRound - player.turnsUsed)
