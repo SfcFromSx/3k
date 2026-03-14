@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Gan Ning avatar 94">
+  <defs>
+    <linearGradient id="bg-c_023-94" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2b5f8d" />
+      <stop offset="100%" stop-color="#f09d49" />
+    </linearGradient>
+    <radialGradient id="glow-c_023-94" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#fff4d5" stop-opacity="0.94" />
+      <stop offset="100%" stop-color="#2b5f8d" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="256" height="256" rx="36" fill="url(#bg-c_023-94)" />
+  <rect x="12" y="12" width="232" height="232" rx="28" fill="url(#glow-c_023-94)" opacity="0.75" />
+  <path d="M42 64 L58 88 H46 L64 116 L32 92 H46 Z" fill="#f8a551" opacity="0.8" />
+  <circle cx="128" cy="128" r="104" fill="none" stroke="#efe0c1" stroke-width="8" opacity="0.85" />
+  <path d="M52 222 Q128 173 204 222 V256 H52 Z" fill="#325b7a" />
+  <path d="M68 210 Q128 194 188 210" fill="none" stroke="#f8a551" stroke-width="8" stroke-linecap="round" opacity="0.8" />
+  <path d="M86 206 Q128 170 170 206" fill="none" stroke="#f7e8c9" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+  <ellipse cx="128" cy="146" rx="85" ry="96" fill="#f4e5c6" />
+  <path d="M84 132 Q128 64 172 132 L168 92 Q128 38 88 92 Z" fill="#31231f" />
+  <path d="M80 134 Q74 162 92 188" fill="none" stroke="#31231f" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  <path d="M176 134 Q182 162 164 188" fill="none" stroke="#31231f" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  
+      <path d="M68 87 Q128 25 188 87 L176 124 Q128 96 80 124 Z" fill="#2b5f8d" />
+      <path d="M94 85 Q128 51 162 85" fill="none" stroke="#f8a551" stroke-width="8" stroke-linecap="round" />
+    
+  <path d="M94 99 Q104 93 116 99" fill="none" stroke="#31231f" stroke-width="5" stroke-linecap="round" />
+  <path d="M140 99 Q152 93 162 99" fill="none" stroke="#31231f" stroke-width="5" stroke-linecap="round" />
+  <ellipse cx="104" cy="111" rx="7" ry="5" fill="#251b1a" />
+  <ellipse cx="152" cy="111" rx="7" ry="5" fill="#251b1a" />
+  <circle cx="102" cy="110" r="2" fill="#fff8ee" opacity="0.8" />
+  <circle cx="150" cy="110" r="2" fill="#fff8ee" opacity="0.8" />
+  <path d="M128 121 Q120 139 128 149 Q136 139 128 121" fill="#e6d7b8" opacity="0.68" />
+  <path d="M104 167 Q128 181 152 167" fill="none" stroke="#3b2d29" stroke-width="5" stroke-linecap="round" />
+  <path d="M41 232 Q128 180 215 232" fill="none" stroke="#4a7392" stroke-width="12" stroke-linecap="round" opacity="0.55" />
+  
+  <circle cx="128" cy="206" r="34" fill="#1f5381" opacity="0.92" />
+  <path d="M120 184 L140 184 L146 226 L114 226 Z" fill="#f8a551" /><path d="M128 172 L144 190 L128 198 L112 190 Z" fill="#f7e8c9" />
+  <text x="128" y="92" text-anchor="middle" font-size="18" font-weight="700" font-family="Georgia, serif" fill="#ebdcbd" opacity="0.75">GN</text>
+</svg>

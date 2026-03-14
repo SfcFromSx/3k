@@ -12,7 +12,7 @@
 - Optional asynchronous Chinese translation for chat messages.
 - Expandable per-message thinking panels for AI player turns.
 - Persistent per-player skill history saved in `localStorage`, including round-review versions.
-- 100 generated SVG avatars for each of the 10 bundled characters.
+- 100 generated SVG avatars for each of the 30 bundled characters.
 
 ## Tech Stack
 

@@ -20,10 +20,11 @@ export interface ChatMessage {
   timestamp: string; // ISO string 
 }
 
-export type GameStatus = 'IDLE' | 'SETUP' | 'PLAYING' | 'ROUND_OVER' | 'MATCH_OVER';
+export type GameStatus = 'IDLE' | 'SETUP' | 'PLAYING' | 'PAUSED' | 'ROUND_OVER' | 'MATCH_OVER';
 
 interface GameStore {
   status: GameStatus;
+  pauseReason: string | null;
   currentRound: number;
   activePlayerId: 'A' | 'B' | 'C' | null;
   players: Record<string, PlayerState>;
@@ -31,6 +32,7 @@ interface GameStore {
   isProcessing: boolean;
   
   setStatus: (status: GameStatus) => void;
+  setPauseReason: (reason: string | null) => void;
   setCurrentRound: (round: number) => void;
   setActivePlayerId: (id: 'A' | 'B' | 'C' | null) => void;
   setPlayers: (players: Record<string, PlayerState>) => void;
@@ -49,6 +51,7 @@ const generateId = () =>
 
 export const useGameStore = create<GameStore>((set, get) => ({
   status: 'IDLE',
+  pauseReason: null,
   currentRound: 0,
   activePlayerId: null,
   players: {},
@@ -56,6 +59,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   isProcessing: false,
 
   setStatus: (status) => set({ status }),
+  setPauseReason: (pauseReason) => set({ pauseReason }),
   setCurrentRound: (currentRound) => set({ currentRound }),
   setActivePlayerId: (activePlayerId) => set({ activePlayerId }),
   setPlayers: (players) => set({ players }),
@@ -91,6 +95,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   resetGame: () =>
     set({
       status: 'IDLE',
+      pauseReason: null,
       currentRound: 0,
       activePlayerId: null,
       players: {},

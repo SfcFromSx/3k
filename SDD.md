@@ -145,7 +145,7 @@ Each saved version includes `version`, `round`, `updatedAt`, `source`, `summary`
 
 ## 7. Character and Avatar Data
 
-- `src/assets/characters.json` currently bundles 10 curated characters.
+- `src/assets/characters.json` currently bundles 30 curated characters.
 - `public/avatars/<characterId>/avatar-001.svg ... avatar-100.svg` stores 100 generated avatar variants per character.
 - `src/assets/avatarCatalog.ts` computes the public path for a given character + variant pair.
 

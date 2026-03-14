@@ -32,7 +32,7 @@ The human user does not play as a contestant. The user configures the match, wat
 
 ## 5. Current Content Scope
 
-- Character roster: 10 bundled Three Kingdoms characters
+- Character roster: 30 bundled Three Kingdoms characters
 - Avatar set: 100 generated avatars per character
 - Supported interface languages: English and Chinese
 

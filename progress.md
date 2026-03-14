@@ -34,3 +34,4 @@ Latest prompt: 1.Review all the project. And update the doc and test incording t
 TODO / follow-up ideas:
 - The arena language toggle intentionally changes interface labels only; chat text still depends on original English plus optional async translation.
 - If you want full bilingual character metadata, the identity cards could also switch faction labels from raw English values to localized labels.
+- Expanded `src/assets/characters.json` from 10 to 30 bundled characters and regenerated the avatar set to 3,000 SVGs total.

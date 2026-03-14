@@ -5,12 +5,7 @@
     "nameCN": "赵云",
     "faction": "Shu",
     "role": "General",
-    "traits": [
-      "Five Tiger Generals",
-      "Spear",
-      "Changban",
-      "Loyal"
-    ],
+    "traits": ["Five Tiger Generals", "Spear", "Changban", "Loyal"],
     "bio": "Legendary general of Shu Han, famous for his bravery at Changban."
   },
   {
@@ -19,12 +14,7 @@
     "nameCN": "周瑜",
     "faction": "Wu",
     "role": "Strategist",
-    "traits": [
-      "Chi Bi",
-      "Fire Attack",
-      "Handsome",
-      "Music"
-    ],
+    "traits": ["Chi Bi", "Fire Attack", "Handsome", "Music"],
     "bio": "Brilliant commander of Eastern Wu, orchestrated the victory at Red Cliffs."
   },
   {
@@ -33,13 +23,8 @@
     "nameCN": "貂蝉",
     "faction": "Other",
     "role": "Beauty",
-    "traits": [
-      "Four Beauties",
-      "Dong Zhuo",
-      "Lu Bu",
-      "Dance"
-    ],
-    "bio": "One of the Four Great Beauties, she helped orchestrate the downfall of the tyrant Dong Zhuo."
+    "traits": ["Four Beauties", "Dong Zhuo", "Lu Bu", "Dance"],
+    "bio": "One of the Four Great Beauties, she helped orchestrate the downfall of Dong Zhuo."
   },
   {
     "id": "c_004",
@@ -47,13 +32,8 @@
     "nameCN": "曹操",
     "faction": "Wei",
     "role": "Warlord",
-    "traits": [
-      "Poet",
-      "Ruthless",
-      "Emperor Xian",
-      "Guandu"
-    ],
-    "bio": "Brilliant, ruthless warlord who laid the foundations for the state of Cao Wei."
+    "traits": ["Poet", "Ruthless", "Emperor Xian", "Guandu"],
+    "bio": "Brilliant, ruthless warlord who laid the foundations for Cao Wei."
   },
   {
     "id": "c_005",
@@ -61,12 +41,7 @@
     "nameCN": "关羽",
     "faction": "Shu",
     "role": "General",
-    "traits": [
-      "Five Tiger Generals",
-      "Green Dragon Crescent Blade",
-      "Loyal",
-      "Red Face"
-    ],
+    "traits": ["Five Tiger Generals", "Green Dragon Crescent Blade", "Loyal", "Red Face"],
     "bio": "Sworn brother of Liu Bei, revered for his martial prowess and unwavering loyalty."
   },
   {
@@ -75,12 +50,7 @@
     "nameCN": "吕布",
     "faction": "Other",
     "role": "General",
-    "traits": [
-      "Flying General",
-      "Red Hare",
-      "Betrayal",
-      "Unmatched Warrior"
-    ],
+    "traits": ["Flying General", "Red Hare", "Betrayal", "Unmatched Warrior"],
     "bio": "The most feared warrior of his time, notorious for his volatile loyalties."
   },
   {
@@ -89,12 +59,7 @@
     "nameCN": "诸葛亮",
     "faction": "Shu",
     "role": "Strategist",
-    "traits": [
-      "Sleeping Dragon",
-      "Feather Fan",
-      "Empty Fort Strategy",
-      "Loyal"
-    ],
+    "traits": ["Sleeping Dragon", "Feather Fan", "Empty Fort Strategy", "Loyal"],
     "bio": "Master strategist and chancellor of Shu Han, renowned for his foresight."
   },
   {
@@ -103,12 +68,8 @@
     "nameCN": "孙权",
     "faction": "Wu",
     "role": "Warlord",
-    "traits": [
-      "Green Eyes",
-      "Purple Beard",
-      "Defender of Jiangdong"
-    ],
-    "bio": "Founding emperor of Eastern Wu, successfully defended his territory against Cao Cao."
+    "traits": ["Green Eyes", "Purple Beard", "Defender of Jiangdong"],
+    "bio": "Founding emperor of Eastern Wu, successfully defended Jiangdong against Cao Cao."
   },
   {
     "id": "c_009",
@@ -116,12 +77,8 @@
     "nameCN": "司马懿",
     "faction": "Wei",
     "role": "Strategist",
-    "traits": [
-      "Wolf's Guise",
-      "Patience",
-      "Wuzhang Plains"
-    ],
-    "bio": "Cunning military strategist of Wei, and the main rival of Zhuge Liang."
+    "traits": ["Wolf's Guise", "Patience", "Wuzhang Plains"],
+    "bio": "Cunning military strategist of Wei and the great rival of Zhuge Liang."
   },
   {
     "id": "c_010",
@@ -129,12 +86,187 @@
     "nameCN": "张飞",
     "faction": "Shu",
     "role": "General",
-    "traits": [
-      "Five Tiger Generals",
-      "Serpent Halberd",
-      "Changban Bridge",
-      "Loud Voice"
-    ],
-    "bio": "Sworn brother of Liu Bei and Guan Yu, a fierce warrior who held the bridge at Changban alone."
+    "traits": ["Five Tiger Generals", "Serpent Halberd", "Changban Bridge", "Loud Voice"],
+    "bio": "Sworn brother of Liu Bei and Guan Yu, a fierce warrior who held Changban Bridge alone."
+  },
+  {
+    "id": "c_011",
+    "nameEN": "Liu Bei",
+    "nameCN": "刘备",
+    "faction": "Shu",
+    "role": "Warlord",
+    "traits": ["Benevolence", "Xuande", "Peach Garden Oath", "Imperial Lineage"],
+    "bio": "Founder of Shu Han, famed for his charisma, compassion, and political resilience."
+  },
+  {
+    "id": "c_012",
+    "nameEN": "Huang Zhong",
+    "nameCN": "黄忠",
+    "faction": "Shu",
+    "role": "General",
+    "traits": ["Five Tiger Generals", "Veteran Archer", "Mount Dingjun", "Old but Mighty"],
+    "bio": "Veteran Shu general whose victory at Mount Dingjun cemented his legendary reputation."
+  },
+  {
+    "id": "c_013",
+    "nameEN": "Ma Chao",
+    "nameCN": "马超",
+    "faction": "Shu",
+    "role": "General",
+    "traits": ["Five Tiger Generals", "Western Liang", "Splendid Armor", "Qiang Ally"],
+    "bio": "Fierce cavalry commander from the northwest, renowned for his martial prestige."
+  },
+  {
+    "id": "c_014",
+    "nameEN": "Pang Tong",
+    "nameCN": "庞统",
+    "faction": "Shu",
+    "role": "Strategist",
+    "traits": ["Fledgling Phoenix", "Chained Strategy", "Luo Feng Po", "Brilliant but Short-Lived"],
+    "bio": "Gifted strategist of Shu, celebrated for his sharp mind and tragic early death."
+  },
+  {
+    "id": "c_015",
+    "nameEN": "Jiang Wei",
+    "nameCN": "姜维",
+    "faction": "Shu",
+    "role": "Strategist",
+    "traits": ["Disciple of Zhuge Liang", "Northern Expeditions", "Late Shu", "Loyal"],
+    "bio": "Successor to Zhuge Liang's northern campaign ideals and one of late Shu's key leaders."
+  },
+  {
+    "id": "c_016",
+    "nameEN": "Cao Pi",
+    "nameCN": "曹丕",
+    "faction": "Wei",
+    "role": "Warlord",
+    "traits": ["Son of Cao Cao", "Poet", "First Wei Emperor", "Abdication of Han"],
+    "bio": "Heir of Cao Cao who formally ended the Han and established the Wei dynasty."
+  },
+  {
+    "id": "c_017",
+    "nameEN": "Xiahou Dun",
+    "nameCN": "夏侯惇",
+    "faction": "Wei",
+    "role": "General",
+    "traits": ["One-Eyed", "Loyal to Cao Cao", "Frontline Commander", "Steadfast"],
+    "bio": "Trusted Wei general remembered for his loyalty, toughness, and iconic loss of one eye."
+  },
+  {
+    "id": "c_018",
+    "nameEN": "Zhang Liao",
+    "nameCN": "张辽",
+    "faction": "Wei",
+    "role": "General",
+    "traits": ["Hefei", "Fearsome Cavalry", "Bravery", "White Wolf Mountain"],
+    "bio": "Elite Wei commander whose daring defense at Hefei terrified Eastern Wu."
+  },
+  {
+    "id": "c_019",
+    "nameEN": "Guo Jia",
+    "nameCN": "郭嘉",
+    "faction": "Wei",
+    "role": "Strategist",
+    "traits": ["Prodigy", "Cao Cao Advisor", "Early Death", "Sharp Predictions"],
+    "bio": "Brilliant young strategist whose insight deeply shaped Cao Cao's early successes."
+  },
+  {
+    "id": "c_020",
+    "nameEN": "Xu Chu",
+    "nameCN": "许褚",
+    "faction": "Wei",
+    "role": "General",
+    "traits": ["Tiger Fool", "Bodyguard", "Immense Strength", "Cao Cao Protector"],
+    "bio": "Powerful Wei warrior famed for raw strength and unwavering protection of Cao Cao."
+  },
+  {
+    "id": "c_021",
+    "nameEN": "Sun Ce",
+    "nameCN": "孙策",
+    "faction": "Wu",
+    "role": "Warlord",
+    "traits": ["Little Conqueror", "Jiangdong", "Bold", "Early Death"],
+    "bio": "Dynamic conqueror who built the foundation of Eastern Wu before dying young."
+  },
+  {
+    "id": "c_022",
+    "nameEN": "Lu Xun",
+    "nameCN": "陆逊",
+    "faction": "Wu",
+    "role": "Strategist",
+    "traits": ["Yiling", "Scholar-General", "Fire Attack", "Calm"],
+    "bio": "Calm and brilliant Wu commander best known for destroying Shu at Yiling."
+  },
+  {
+    "id": "c_023",
+    "nameEN": "Gan Ning",
+    "nameCN": "甘宁",
+    "faction": "Wu",
+    "role": "General",
+    "traits": ["Pirate", "Bells", "Daring Raid", "Bold"],
+    "bio": "Former river pirate turned Wu hero, famous for audacious night raids and swagger."
+  },
+  {
+    "id": "c_024",
+    "nameEN": "Taishi Ci",
+    "nameCN": "太史慈",
+    "faction": "Wu",
+    "role": "General",
+    "traits": ["Archer", "Honor", "Duel", "Trusted Warrior"],
+    "bio": "Honorable warrior of Wu remembered for martial skill, loyalty, and famed duels."
+  },
+  {
+    "id": "c_025",
+    "nameEN": "Xiao Qiao",
+    "nameCN": "小乔",
+    "faction": "Wu",
+    "role": "Beauty",
+    "traits": ["Two Qiaos", "Younger Qiao", "Zhou Yu", "Grace"],
+    "bio": "The younger of the famous Qiao sisters and the elegant wife of Zhou Yu."
+  },
+  {
+    "id": "c_026",
+    "nameEN": "Dong Zhuo",
+    "nameCN": "董卓",
+    "faction": "Other",
+    "role": "Warlord",
+    "traits": ["Tyrant", "Luoyang", "Burned Capital", "Usurper"],
+    "bio": "The brutal strongman whose tyranny threw the late Han court into chaos."
+  },
+  {
+    "id": "c_027",
+    "nameEN": "Yuan Shao",
+    "nameCN": "袁绍",
+    "faction": "Other",
+    "role": "Warlord",
+    "traits": ["Noble Clan", "Guandu", "Many Officers", "Indecisive"],
+    "bio": "Powerful northern warlord whose vast resources failed to overcome Cao Cao at Guandu."
+  },
+  {
+    "id": "c_028",
+    "nameEN": "Zhang Jiao",
+    "nameCN": "张角",
+    "faction": "Other",
+    "role": "Mystic",
+    "traits": ["Yellow Turbans", "Taiping", "Healer", "Rebellion"],
+    "bio": "Charismatic religious leader whose Yellow Turban Rebellion shook the Han empire."
+  },
+  {
+    "id": "c_029",
+    "nameEN": "Hua Tuo",
+    "nameCN": "华佗",
+    "faction": "Other",
+    "role": "Physician",
+    "traits": ["Divine Doctor", "Anesthesia", "Surgery", "Healing"],
+    "bio": "Legendary physician remembered for remarkable treatments and pioneering surgery tales."
+  },
+  {
+    "id": "c_030",
+    "nameEN": "Zhen Ji",
+    "nameCN": "甄姬",
+    "faction": "Wei",
+    "role": "Beauty",
+    "traits": ["Luo River", "Grace", "Cao Pi", "Elegance"],
+    "bio": "Celebrated Wei noblewoman famed in legend and poetry for beauty and refinement."
   }
 ]

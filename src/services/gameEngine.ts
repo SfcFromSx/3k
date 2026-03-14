@@ -117,6 +117,75 @@ let translationWorkerActive = false;
 let translationIdleTimer: number | null = null;
 const PLAYING_TRANSLATION_IDLE_MS = 1800;
 const NON_PLAYING_TRANSLATION_IDLE_MS = 50;
+const MAX_AI_RETRY_ATTEMPTS = 10;
+const AI_RETRY_DELAY_MS = 250;
+
+const isSystemErrorContent = (content: string | undefined) =>
+  Boolean(content?.startsWith('(System:'));
+
+const delay = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+const pauseGameForFailures = (message: string) => {
+  const gameStore = useGameStore.getState();
+  gameStore.setPauseReason(message);
+  gameStore.setStatus('PAUSED');
+  gameStore.addChatMessage({
+    sender: 'System',
+    textEN: message,
+  });
+};
+
+const runChatResultWithRetry = async (
+  modelName: string,
+  messages: { role: string; content: string }[],
+  options: Record<string, unknown> | undefined,
+  failureLabel: string
+) => {
+  for (let attempt = 1; attempt <= MAX_AI_RETRY_ATTEMPTS; attempt += 1) {
+    const result = await generateChatResult(modelName, messages, options);
+
+    if (!isSystemErrorContent(result.content)) {
+      return result;
+    }
+
+    if (attempt < MAX_AI_RETRY_ATTEMPTS) {
+      await delay(AI_RETRY_DELAY_MS);
+    }
+  }
+
+  pauseGameForFailures(
+    `${failureLabel} failed ${MAX_AI_RETRY_ATTEMPTS} times. Game paused.`
+  );
+  return null;
+};
+
+const runChatResponseWithRetry = async (
+  modelName: string,
+  messages: { role: string; content: string }[],
+  options: Record<string, unknown> | undefined,
+  failureLabel: string,
+  pauseOnFailure = true
+) => {
+  for (let attempt = 1; attempt <= MAX_AI_RETRY_ATTEMPTS; attempt += 1) {
+    const content = await generateChatResponse(modelName, messages, options);
+
+    if (!isSystemErrorContent(content)) {
+      return content;
+    }
+
+    if (attempt < MAX_AI_RETRY_ATTEMPTS) {
+      await delay(AI_RETRY_DELAY_MS);
+    }
+  }
+
+  if (pauseOnFailure) {
+    pauseGameForFailures(
+      `${failureLabel} failed ${MAX_AI_RETRY_ATTEMPTS} times. Game paused.`
+    );
+  }
+
+  return null;
+};
 
 const resetTranslationRuntime = () => {
   translationQueue.length = 0;
@@ -177,6 +246,7 @@ export const startGameRound = async () => {
 
   gameStore.setPlayers(initialPlayers);
   gameStore.setCurrentRound(nextRound);
+  gameStore.setPauseReason(null);
   gameStore.setStatus('PLAYING');
   gameStore.setActivePlayerId('A');
 
@@ -225,7 +295,15 @@ export const executePlayerTurn = async (playerId: PlayerId) => {
 
   const prompt = buildPlayerPrompt(playerId, player, gameStore, config.turnsPerRound);
 
-  const questionResult = await generateChatResult(modelName, [{ role: 'user', content: prompt }]);
+  const questionResult = await runChatResultWithRetry(
+    modelName,
+    [{ role: 'user', content: prompt }],
+    undefined,
+    `Player ${playerId} turn`
+  );
+  if (!questionResult) {
+    return;
+  }
   const question = questionResult.content;
 
   const questionMessageId = gameStore.addChatMessage({
@@ -254,6 +332,7 @@ export const executeJudgeTurn = async (playerId: PlayerId, question: string) => 
   const character = charactersData.find(c => c.id === player.assignedCharacterId);
 
   let judgeAnswer = "(No Judge model assigned.)";
+  let judgeThinking: string | undefined;
   if (modelName && character) {
     const prompt = `
 You are the Judge in a "Who Am I?" Three Kingdoms game.
@@ -275,7 +354,17 @@ Judge guidelines:
 Determine if the question accurately describes ${character.nameEN} and provide your answer.
 `;
     // For judge we want minimal tokens and low temp
-    const rawAnswer = await generateChatResponse(modelName, [{ role: 'user', content: prompt }], { temperature: 0.1 });
+    const judgeResult = await runChatResultWithRetry(
+      modelName,
+      [{ role: 'user', content: prompt }],
+      { temperature: 0.1 },
+      `Judge response for Player ${playerId}`
+    );
+    if (!judgeResult) {
+      return;
+    }
+    const rawAnswer = judgeResult.content;
+    judgeThinking = judgeResult.thinking;
 
     // Attempt parse
     const normalizedAnswer = rawAnswer.trim().toLowerCase();
@@ -289,6 +378,7 @@ Determine if the question accurately describes ${character.nameEN} and provide y
   const judgeMessageId = gameStore.addChatMessage({
     sender: 'Judge',
     textEN: judgeMessageText,
+    thinkingEN: judgeThinking,
   });
 
   gameStore.updatePlayer(playerId, { turnsUsed: player.turnsUsed + 1 });
@@ -339,14 +429,16 @@ const processTranslationQueue = async () => {
   translationWorkerActive = true;
 
   try {
-    const cnText = await generateChatResponse(config.models.translator, [{
+    const cnText = await runChatResponseWithRetry(config.models.translator, [{
       role: 'user',
       content: `Translate to simplified Chinese: ${nextJob.text}`
-    }]);
+    }], undefined, 'Translation job', false);
 
-    if (!cnText.startsWith('(System:')) {
-      gameStore.updateChatMessage(nextJob.msgId, { textCN: cnText });
+    if (!cnText) {
+      return;
     }
+
+    gameStore.updateChatMessage(nextJob.msgId, { textCN: cnText });
   } finally {
     translationWorkerActive = false;
     scheduleTranslationQueue();
@@ -419,11 +511,18 @@ Focus on patterns that helped or mistakes to avoid.
 Return only the updated notebook text.
 `;
 
-    const nextSkill = await generateChatResponse(modelName as string, [{ role: 'user', content: prompt }], {
-      temperature: 0.3,
-    });
+    const nextSkill = await runChatResponseWithRetry(
+      modelName as string,
+      [{ role: 'user', content: prompt }],
+      { temperature: 0.3 },
+      `Round review for Player ${playerId}`
+    );
 
-    if (nextSkill.startsWith('(System:')) {
+    if (!nextSkill) {
+      return;
+    }
+
+    if (isSystemErrorContent(nextSkill)) {
       continue;
     }
 
@@ -448,6 +547,11 @@ const checkRoundEnd = async () => {
     });
 
     await runRoundReview();
+
+    if (useGameStore.getState().status === 'PAUSED') {
+      gameStore.setActivePlayerId(null);
+      return;
+    }
 
     if (gameStore.currentRound >= config.rounds) {
       gameStore.setStatus('MATCH_OVER');

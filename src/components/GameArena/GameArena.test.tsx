@@ -90,6 +90,24 @@ describe('GameArena', () => {
     expect(await screen.findByText(/The prior answers point toward Shu/i)).toBeInTheDocument();
   });
 
+  it('shows a thinking toggle for judge messages and reveals the details on click', async () => {
+    useGameStore.getState().resetGame();
+    useGameStore.getState().setCurrentRound(1);
+    useGameStore.getState().addChatMessage({
+      sender: 'Judge',
+      textEN: 'Yes. (Player A Turn 1/5)',
+      thinkingEN: 'The question directly matches the assigned faction.',
+    });
+
+    render(<GameArena />);
+
+    expect(screen.queryByText(/The question directly matches the assigned faction/i)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /show thinking for judge/i }));
+
+    expect(await screen.findByText(/The question directly matches the assigned faction/i)).toBeInTheDocument();
+  });
+
   it('auto-advances turns while autoplay is running', () => {
     vi.useFakeTimers();
 
@@ -141,6 +159,8 @@ describe('GameArena', () => {
     expect(screen.getByText('身份卡')).toBeInTheDocument();
     expect(screen.getByText('赵云')).toBeInTheDocument();
     expect(screen.getByText('(蜀)')).toBeInTheDocument();
+    expect(screen.queryByText('Zhao Yun')).not.toBeInTheDocument();
+    expect(screen.queryByText('Shu')).not.toBeInTheDocument();
     expect(useConfigStore.getState().uiLanguage).toBe('CN');
   });
 });

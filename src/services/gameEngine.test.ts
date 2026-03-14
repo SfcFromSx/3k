@@ -4,6 +4,7 @@ import { useGameStore } from '../store/useGameStore';
 import { useConfigStore } from '../store/useConfigStore';
 import * as ollamaService from './ollamaService';
 import { getSkillHistory } from './skillHistory';
+import charactersData from '../assets/characters.json';
 
 // Mock the services and stores
 vi.mock('./ollamaService', () => ({
@@ -33,6 +34,10 @@ describe('gameEngine', () => {
   });
 
   describe('startGameRound', () => {
+    it('should use the expanded 30-character roster', () => {
+      expect(charactersData).toHaveLength(30);
+    });
+
     it('should initialize a new round with 3 unique characters', async () => {
       await startGameRound();
       const state = useGameStore.getState();
@@ -55,12 +60,18 @@ describe('gameEngine', () => {
         content: 'Am I Zhao Yun?',
         thinking: 'The clues match Shu.',
       });
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValueOnce({
+        content: 'Am I Zhao Yun?',
+        thinking: 'The clues match Shu.',
+      }).mockResolvedValueOnce({
+        content: 'No.',
+        thinking: 'The trait does not match the assigned identity.',
+      });
       
       await startGameRound();
       await executePlayerTurn('A');
       
-      expect(ollamaService.generateChatResponse).toHaveBeenCalled();
+      expect(ollamaService.generateChatResult).toHaveBeenCalled();
       const state = useGameStore.getState();
       expect(state.chatLog).toContainEqual(expect.objectContaining({
         sender: 'PlayerA',
@@ -79,11 +90,12 @@ describe('gameEngine', () => {
     });
 
     it('stores player thinking separately from the visible question', async () => {
-      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValueOnce({
         content: 'Am I Guan Yu?',
         thinking: 'I already ruled out Wei and Wu.',
+      }).mockResolvedValueOnce({
+        content: 'No.',
       });
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
 
       await startGameRound();
       await executePlayerTurn('A');
@@ -94,10 +106,11 @@ describe('gameEngine', () => {
     });
 
     it('grounds the player prompt in the actual rules and candidate roster', async () => {
-      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValueOnce({
         content: 'Am I Sima Yi?',
+      }).mockResolvedValueOnce({
+        content: 'No.',
       });
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
 
       await startGameRound();
       useGameStore.getState().setPlayers({
@@ -117,10 +130,11 @@ describe('gameEngine', () => {
     });
 
     it('falls back to another configured model when a player role is blank', async () => {
-      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValueOnce({
         content: 'Am I Sima Yi?',
+      }).mockResolvedValueOnce({
+        content: 'No.',
       });
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
 
       useConfigStore.getState().setConfig({
         models: {
@@ -135,9 +149,11 @@ describe('gameEngine', () => {
       await startGameRound();
       await executePlayerTurn('C');
 
-      expect(ollamaService.generateChatResult).toHaveBeenCalledWith(
+      expect(ollamaService.generateChatResult).toHaveBeenNthCalledWith(
+        1,
         'test-model',
-        expect.any(Array)
+        expect.any(Array),
+        undefined
       );
       expect(useConfigStore.getState().models.playerC).toBe('test-model');
       expect(useGameStore.getState().chatLog).not.toContainEqual(
@@ -147,11 +163,42 @@ describe('gameEngine', () => {
         })
       );
     });
+
+    it('retries player generation up to 10 times and then pauses without posting the raw model error', async () => {
+      vi.useFakeTimers();
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: '(System: Unexpected response format from local AI.)',
+      });
+
+      await startGameRound();
+      const turnPromise = executePlayerTurn('A');
+      await vi.runAllTimersAsync();
+      await turnPromise;
+
+      expect(ollamaService.generateChatResult).toHaveBeenCalledTimes(10);
+      expect(useGameStore.getState().status).toBe('PAUSED');
+      expect(useGameStore.getState().pauseReason).toBe('Player A turn failed 10 times. Game paused.');
+      expect(useGameStore.getState().chatLog).not.toContainEqual(
+        expect.objectContaining({
+          sender: 'PlayerA',
+          textEN: '(System: Unexpected response format from local AI.)',
+        })
+      );
+      expect(useGameStore.getState().chatLog).toContainEqual(
+        expect.objectContaining({
+          sender: 'System',
+          textEN: 'Player A turn failed 10 times. Game paused.',
+        })
+      );
+      vi.useRealTimers();
+    });
   });
 
   describe('executeJudgeTurn', () => {
     it('should handle a correct guess', async () => {
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('Yes.');
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'Yes.',
+      });
       
       await startGameRound();
       useGameStore.getState().updatePlayer('A', { assignedCharacterId: 'c_001' });
@@ -167,7 +214,9 @@ describe('gameEngine', () => {
     });
 
     it('should increment turnsUsed', async () => {
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'No.',
+      });
       
       await startGameRound();
       await executeJudgeTurn('A', 'Am I Cao Cao?');
@@ -177,7 +226,10 @@ describe('gameEngine', () => {
     });
 
     it('should advance to the next round when the match is not over', async () => {
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'No.',
+      });
+      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('Carry forward concise deduction notes.');
 
       useConfigStore.getState().setConfig({ rounds: 2, turnsPerRound: 1 });
       await startGameRound();
@@ -192,7 +244,10 @@ describe('gameEngine', () => {
     });
 
     it('should end the match after the final configured round', async () => {
-      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('No.');
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'No.',
+      });
+      vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('Carry forward concise deduction notes.');
 
       useConfigStore.getState().setConfig({ rounds: 1, turnsPerRound: 1 });
       await startGameRound();
@@ -207,6 +262,9 @@ describe('gameEngine', () => {
     });
 
     it('saves a new skill version for each player after the round review', async () => {
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'No.',
+      });
       vi.mocked(ollamaService.generateChatResponse).mockResolvedValue('Use faction elimination before name guesses.');
 
       useConfigStore.getState().setConfig({ rounds: 1, turnsPerRound: 1 });
@@ -228,6 +286,20 @@ describe('gameEngine', () => {
         source: 'round_review',
         content: 'Use faction elimination before name guesses.',
       }));
+    });
+
+    it('stores judge thinking separately from the visible verdict', async () => {
+      vi.mocked(ollamaService.generateChatResult).mockResolvedValue({
+        content: 'Yes.',
+        thinking: 'The asked role matches the assigned character profile.',
+      });
+
+      await startGameRound();
+      await executeJudgeTurn('A', 'Am I a general?');
+
+      const judgeMessage = useGameStore.getState().chatLog.find((message) => message.sender === 'Judge');
+      expect(judgeMessage?.textEN).toContain('Yes.');
+      expect(judgeMessage?.thinkingEN).toBe('The asked role matches the assigned character profile.');
     });
   });
 });

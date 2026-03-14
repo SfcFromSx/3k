@@ -14,6 +14,7 @@ const STATUS_TEXT_KEY = {
   IDLE: 'statusIDLE',
   SETUP: 'statusSETUP',
   PLAYING: 'statusPLAYING',
+  PAUSED: 'statusPAUSED',
   ROUND_OVER: 'statusROUND_OVER',
   MATCH_OVER: 'statusMATCH_OVER',
 } as const;
@@ -49,7 +50,7 @@ const MessageBubble = ({
     const isSystem = msg.sender === 'System';
     const isJudge = msg.sender === 'Judge';
     const isPlayer = msg.sender === 'PlayerA' || msg.sender === 'PlayerB' || msg.sender === 'PlayerC';
-    const hasThinking = isPlayer && Boolean(msg.thinkingEN);
+    const hasThinking = (isPlayer || isJudge) && Boolean(msg.thinkingEN);
     const text = UI_TEXT[uiLanguage];
     
     let colorClass = 'text-ink';
@@ -117,18 +118,14 @@ const IdentityCard = ({
 
     const avatarUrl = getAvatarUrl(char.id, player.avatarVariant);
     const primaryName = uiLanguage === 'CN' ? char.nameCN : char.nameEN;
-    const secondaryName = uiLanguage === 'CN' ? char.nameEN : char.nameCN;
     const factionLabel = FACTION_LABELS[uiLanguage][char.faction as keyof typeof FACTION_LABELS.EN] ?? char.faction;
-    const secondaryFactionLabel = FACTION_LABELS[uiLanguage === 'CN' ? 'EN' : 'CN'][char.faction as keyof typeof FACTION_LABELS.EN] ?? char.faction;
 
     return (
         <div className="bg-white/90 p-4 border border-gold rounded shadow relative overflow-hidden text-center m-2 w-48">
              <div className="absolute top-0 right-0 p-1 bg-stamp text-white text-xs rounded-bl">{playerId}</div>
              <img src={avatarUrl} alt={`${char.nameEN} avatar`} className="w-16 h-16 rounded-full mx-auto border-2 border-gold mb-2 object-cover object-top shadow-sm" />
              <div className="text-xl font-bold mb-1">{primaryName}</div>
-             <div className="text-xs text-ink/55 mb-1">{secondaryName}</div>
              <div className="text-sm text-ink/60 mb-2">({factionLabel})</div>
-             <div className="text-xs text-ink/45 mb-2">{secondaryFactionLabel}</div>
              <div className="text-xs font-mono text-ink/40 truncate" title={configModel as string}>{configModel}</div>
              
              <div className="mt-3 pt-3 border-t border-gold/30">
@@ -177,15 +174,20 @@ const GameArena = () => {
   const currentRound = useGameStore((state) => state.currentRound);
   const activePlayerId = useGameStore((state) => state.activePlayerId);
   const status = useGameStore((state) => state.status);
+  const pauseReason = useGameStore((state) => state.pauseReason);
   const isProcessing = useGameStore((state) => state.isProcessing);
   const players = useGameStore((state) => state.players);
   const rounds = useConfigStore((state) => state.rounds);
   const uiLanguage = useConfigStore((state) => state.uiLanguage);
   const setConfig = useConfigStore((state) => state.setConfig);
+  const setStatus = useGameStore((state) => state.setStatus);
+  const setPauseReason = useGameStore((state) => state.setPauseReason);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const text = UI_TEXT[uiLanguage];
   const statusLabel = text[STATUS_TEXT_KEY[status]];
+  const isFailurePaused = status === 'PAUSED';
+  const isAutoplayPaused = isPaused || isFailurePaused;
 
   useEffect(() => {
      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -193,7 +195,7 @@ const GameArena = () => {
 
   useEffect(() => {
      if (
-       isPaused ||
+       isAutoplayPaused ||
        status !== 'PLAYING' ||
        isProcessing ||
        !activePlayerId
@@ -206,9 +208,15 @@ const GameArena = () => {
      }, 900);
 
      return () => window.clearTimeout(timerId);
-  }, [activePlayerId, isProcessing, status, isPaused]);
+  }, [activePlayerId, isAutoplayPaused, isProcessing, status]);
 
   const togglePause = () => {
+    if (isFailurePaused) {
+      setPauseReason(null);
+      setStatus('PLAYING');
+      return;
+    }
+
     setIsPaused((current) => !current);
   };
 
@@ -251,23 +259,27 @@ const GameArena = () => {
               
               <button 
                 onClick={togglePause}
-                disabled={status !== 'PLAYING' && !isPaused}
+                disabled={status !== 'PLAYING' && !isAutoplayPaused}
                 className={`w-full font-bold py-4 px-6 rounded-lg mb-6 shadow-xl transform active:scale-95 transition-all duration-300 ${
-                  status !== 'PLAYING' && !isPaused
+                  status !== 'PLAYING' && !isAutoplayPaused
                     ? 'bg-gray-400 cursor-not-allowed text-white opacity-50'
-                    : isPaused
+                    : isAutoplayPaused
                       ? 'bg-gradient-to-br from-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 text-white border border-emerald-200/30'
                       : 'bg-gradient-to-br from-gold to-yellow-800 hover:from-yellow-700 hover:to-gold text-white border border-yellow-300/30'
                 }`}
               >
                  <div className="flex items-center justify-center space-x-2">
-                    {isProcessing && !isPaused && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>}
-                    <span>{isPaused ? text.resumeAutoplay : text.pauseAutoplay}</span>
+                    {isProcessing && !isAutoplayPaused && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>}
+                    <span>{isAutoplayPaused ? text.resumeAutoplay : text.pauseAutoplay}</span>
                  </div>
               </button>
 
               <div className="w-full mb-6 rounded-lg border border-gold/20 bg-white/30 px-4 py-3 text-sm text-ink/80 text-center">
-                 {isPaused ? text.autoplayPaused : text.autoplayRunning}
+                 {isFailurePaused
+                   ? pauseReason ?? text.autoplayRetryPaused
+                   : isPaused
+                     ? text.autoplayPaused
+                     : text.autoplayRunning}
               </div>
               
               <div className="w-full mt-auto bg-white/20 p-4 rounded-lg border border-gold/10">
@@ -321,6 +333,8 @@ const GameArena = () => {
                                    <div className="w-2 h-2 bg-gold rounded-full"></div>
                                    <span>
                                      {isPaused
+                                       ? text.autoplayPausedShort
+                                       : isFailurePaused
                                        ? text.autoplayPausedShort
                                        : formatUiText(text.waitingForPlayer, { player: activePlayerId ?? 'A' })}
                                    </span>

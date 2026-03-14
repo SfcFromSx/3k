@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Ma Chao avatar 44">
+  <defs>
+    <linearGradient id="bg-c_013-44" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#297748" />
+      <stop offset="100%" stop-color="#e3c365" />
+    </linearGradient>
+    <radialGradient id="glow-c_013-44" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#fef2c9" stop-opacity="0.94" />
+      <stop offset="100%" stop-color="#2c7a4b" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="256" height="256" rx="36" fill="url(#bg-c_013-44)" />
+  <rect x="12" y="12" width="232" height="232" rx="28" fill="url(#glow-c_013-44)" opacity="0.75" />
+  <path d="M58 76 L74 94 L54 100 L66 116 L42 112 L36 134 L28 108 L6 112 L18 96 L0 86 L24 84 L18 60 L36 76 Z" fill="#d6b658" opacity="0.55" />
+  <circle cx="128" cy="128" r="104" fill="none" stroke="#eadeb5" stroke-width="8" opacity="0.85" />
+  <path d="M52 222 Q128 162 204 222 V256 H52 Z" fill="#d1d6d0" />
+  <path d="M68 210 Q128 186 188 210" fill="none" stroke="#d6b658" stroke-width="8" stroke-linecap="round" opacity="0.8" />
+  <path d="M86 206 Q128 170 170 206" fill="none" stroke="#f2e6bd" stroke-width="6" stroke-linecap="round" opacity="0.65" />
+  <ellipse cx="128" cy="146" rx="83" ry="94" fill="#f9edc4" />
+  <path d="M84 132 Q128 59 172 132 L168 92 Q128 41 88 92 Z" fill="#261812" />
+  <path d="M80 134 Q74 162 92 188" fill="none" stroke="#261812" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  <path d="M176 134 Q182 162 164 188" fill="none" stroke="#261812" stroke-width="16" stroke-linecap="round" opacity="0.95" />
+  
+      <path d="M68 81 Q128 19 188 81 L176 124 Q128 96 80 124 Z" fill="#2c7a4b" />
+      <path d="M94 79 Q128 45 162 79" fill="none" stroke="#d6b658" stroke-width="8" stroke-linecap="round" />
+    
+  <path d="M91 95 Q101 89 113 95" fill="none" stroke="#261812" stroke-width="5" stroke-linecap="round" />
+  <path d="M143 95 Q155 89 165 95" fill="none" stroke="#261812" stroke-width="5" stroke-linecap="round" />
+  <ellipse cx="101" cy="107" rx="7" ry="5" fill="#251b1a" />
+  <ellipse cx="155" cy="107" rx="7" ry="5" fill="#251b1a" />
+  <circle cx="99" cy="106" r="2" fill="#fff8ee" opacity="0.8" />
+  <circle cx="153" cy="106" r="2" fill="#fff8ee" opacity="0.8" />
+  <path d="M128 117 Q120 135 128 145 Q136 135 128 117" fill="#ebdfb6" opacity="0.68" />
+  <path d="M104 163 Q128 177 152 163" fill="none" stroke="#30221c" stroke-width="5" stroke-linecap="round" />
+  <path d="M33 232 Q128 180 223 232" fill="none" stroke="#e9eee8" stroke-width="12" stroke-linecap="round" opacity="0.55" />
+  
+  <circle cx="128" cy="206" r="34" fill="#206e3f" opacity="0.92" />
+  <path d="M128 182 L128 228 M118 194 L128 174 L138 194" stroke="#d6b658" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="128" y="92" text-anchor="middle" font-size="18" font-weight="700" font-family="Georgia, serif" fill="#e6dab1" opacity="0.75">MC</text>
+</svg>
