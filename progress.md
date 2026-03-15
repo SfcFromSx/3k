@@ -41,3 +41,11 @@ TODO / follow-up ideas:
 - Added regression coverage in `src/services/gameEngine.test.ts` for alias-aware player prompts, alias guesses, and Judge reference-profile grounding.
 - Verified `npm run test:run`, `npm run lint`, and `npm run build` all pass after the character-reference update.
 - Ran the web-game Playwright client against the setup screen and visually checked `output/web-game/wiki-judge-check/shot-0.png`; no browser console errors were emitted in that pass.
+- Fixed avatar URL generation in `src/assets/avatarCatalog.ts` to respect `import.meta.env.BASE_URL`, which prevents broken player-card avatars when the app is deployed under a subpath such as GitHub Pages.
+- Added `src/assets/avatarCatalog.test.ts` to lock in root-path and subpath avatar URL behavior.
+- Re-verified `npm run test:run`, `npm run lint`, and `npm run build` after the avatar-path fix.
+- Added project-file mirroring for skill history in `src/services/skillHistory.ts`; every saved skill snapshot now posts to a local Vite endpoint in dev.
+- Added a Vite middleware in `vite.config.ts` that writes skill exports to `data/skill-history/player-a|b|c/` as `history.json`, `current.md`, and one markdown file per version.
+- Added `src/services/skillHistory.test.ts` to verify snapshot export requests are emitted for seed, new-version, and duplicate-content saves.
+- Updated `README.md`, `SDD.md`, `GDD.md`, and `GDD_CN.md` so they describe the new on-disk skill export behavior.
+- Verified the file-export path end to end by posting a snapshot to the dev server and confirming the expected files were created under `data/skill-history/player-a/`; removed the temporary verification payload afterward and left `data/skill-history/.gitkeep` plus `.gitignore`.

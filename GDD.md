@@ -51,10 +51,10 @@ At the end of every round:
 
 1. Each player reviews the round transcript.
 2. The model rewrites a concise strategy notebook.
-3. The notebook is saved as a new version in local storage.
+3. The notebook is saved as a new version in browser storage and mirrored into `data/skill-history/player-a|b|c/`.
 4. The updated notebook is injected into future prompts for that player.
 
-This creates visible long-term evolution across rounds and across sessions on the same browser.
+This creates visible long-term evolution across rounds, across sessions on the same browser, and in project files that can be reviewed directly.
 
 ## 8. UX Goals
 

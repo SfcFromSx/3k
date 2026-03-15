@@ -136,10 +136,13 @@ Core responsibilities:
 
 ### 6.3 `skillHistory.ts`
 
-Stores versioned strategy notebook entries in `localStorage`:
+Stores versioned strategy notebook entries in browser storage and mirrors them into project files during local dev:
 
-- `skill_A`, `skill_B`, `skill_C`: latest snapshot
-- `skill_history_A`, `skill_history_B`, `skill_history_C`: full version history
+- `skill_A`, `skill_B`, `skill_C`: latest snapshot in `localStorage`
+- `skill_history_A`, `skill_history_B`, `skill_history_C`: full version history in `localStorage`
+- `data/skill-history/player-a|b|c/history.json`: exported manifest per player
+- `data/skill-history/player-a|b|c/current.md`: latest notebook text
+- `data/skill-history/player-a|b|c/v###-round-###-<source>.md`: one file per saved version
 
 Each saved version includes `version`, `round`, `updatedAt`, `source`, `summary`, and `content`.
 

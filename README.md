@@ -11,7 +11,7 @@
 - CN/EN interface toggle available from both setup and arena views.
 - Optional asynchronous Chinese translation for chat messages.
 - Expandable per-message thinking panels for AI player turns.
-- Persistent per-player skill history saved in `localStorage`, including round-review versions.
+- Persistent per-player skill history saved in both `localStorage` and project files under `data/skill-history`.
 - 100 generated SVG avatars for each of the 30 bundled characters.
 
 ## Tech Stack
@@ -62,9 +62,10 @@ The Vite dev server proxies `/api/ark/*` to Volcengine Ark.
 - `src/components/GameArena`: autoplay arena, chat feed, scoreboard, identity cards
 - `src/services/gameEngine.ts`: round orchestration, judge/player turns, round review, translation queue
 - `src/services/ollamaService.ts`: Ollama + Ark chat/model APIs
-- `src/services/skillHistory.ts`: `localStorage` persistence for skill notebooks
+- `src/services/skillHistory.ts`: browser persistence plus project-file mirroring for skill notebooks
 - `src/store`: Zustand stores for config and live game state
 - `public/avatars`: generated avatar library
+- `data/skill-history`: exported per-player skill version files and manifests created while running the local dev server
 
 ## Validation
 

@@ -12,6 +12,7 @@ export interface SkillVersionRecord {
 
 const CURRENT_KEY_PREFIX = 'skill_';
 const HISTORY_KEY_PREFIX = 'skill_history_';
+const SKILL_HISTORY_SYNC_ENDPOINT = '/api/skill-history/snapshot';
 
 const getCurrentKey = (playerId: SkillPlayerId) => `${CURRENT_KEY_PREFIX}${playerId}`;
 const getHistoryKey = (playerId: SkillPlayerId) => `${HISTORY_KEY_PREFIX}${playerId}`;
@@ -29,6 +30,28 @@ const parseHistory = (raw: string | null): SkillVersionRecord[] => {
 
 const writeHistory = (playerId: SkillPlayerId, history: SkillVersionRecord[]) => {
   localStorage.setItem(getHistoryKey(playerId), JSON.stringify(history));
+};
+
+const syncSkillStateToProject = (
+  playerId: SkillPlayerId,
+  history: SkillVersionRecord[],
+  currentSkill: string
+) => {
+  if (typeof fetch !== 'function') return;
+
+  void fetch(SKILL_HISTORY_SYNC_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      playerId,
+      currentSkill,
+      history,
+    }),
+  }).catch((error) => {
+    console.warn(`Unable to mirror skill history for Player ${playerId} into project files.`, error);
+  });
 };
 
 const summarizeSkill = (content: string) => {
@@ -59,6 +82,7 @@ export const ensureSkillHistorySeed = (playerId: SkillPlayerId) => {
   };
 
   writeHistory(playerId, [seededRecord]);
+  syncSkillStateToProject(playerId, [seededRecord], currentSkill);
 };
 
 export const saveSkillVersion = (
@@ -76,6 +100,7 @@ export const saveSkillVersion = (
 
   if (latest?.content.trim() === normalizedContent) {
     localStorage.setItem(getCurrentKey(playerId), normalizedContent);
+    syncSkillStateToProject(playerId, history, normalizedContent);
     return latest;
   }
 
@@ -91,5 +116,6 @@ export const saveSkillVersion = (
   const nextHistory = [...history, nextRecord];
   writeHistory(playerId, nextHistory);
   localStorage.setItem(getCurrentKey(playerId), normalizedContent);
+  syncSkillStateToProject(playerId, nextHistory, normalizedContent);
   return nextRecord;
 };
